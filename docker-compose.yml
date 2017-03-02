@@ -1,0 +1,9 @@
+lfum.es-url-manager:
+    build: "./docker/"
+    ports:
+        - 80:3000
+    volumes:
+        - ./:/app
+    environment:
+        - VIRTUAL_HOST=dev.lfum.es
+    tty: true
