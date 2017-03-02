@@ -7,7 +7,7 @@ module.exports.redirect = (request, reply) => {
     if (!error && response.statusCode == 200) {
       reply.redirect(uri).code(301);
     } else {
-      console.error(response.statusCode)
+      reply.redirect("http://lfum.es").code(301);
     }
   })
 }
