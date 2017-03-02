@@ -10,37 +10,8 @@ server.connection({
     } 
 });
 
-const options = {
-    ops: {
-        interval: 1000
-    },
-    reporters: {
-        myConsoleReporter: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ log: '*', response: '*' }]
-        }, {
-            module: 'good-console'
-        }, 'stdout'],
-        myFileReporter: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ ops: '*' }]
-        }, {
-            module: 'good-squeeze',
-            name: 'SafeJson'
-        }],
-        myHTTPReporter: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ error: '*' }]
-        }]
-    }
-};
-
 server.register({
-    register: require('good'),
-    options: options
+    register: require('h2o2')
 }, err => {
     if (err) {
         console.log(err);
@@ -62,14 +33,10 @@ server.register({
 
         server.route({
           method: '*',
-          path: '/{path*}',
+          path: '/{hash}',
           handler: {
             proxy: {
-              host: 'localhost',
-              port: 3000,
-              protocol: 'http',
-              passThrough: true,
-              redirects: 5
+              uri: 'http://localhost:3000/{hash}'
             }
           }
         });
