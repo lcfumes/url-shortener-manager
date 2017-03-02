@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
+const fetchRequest = require('request');
 
 const server = new Hapi.Server();
 server.connection({ 
@@ -33,13 +34,39 @@ server.register({
 
         server.route({
           method: '*',
-          path: '/{hash}',
+          path: '/js/{all}',
           handler: {
             proxy: {
-              uri: 'http://localhost:3000/{hash}'
+              uri: 'http://localhost:3030/js/{all}'
             }
           }
         });
+
+        server.route({
+          method: '*',
+          path: '/favicon.ico',
+          handler: {
+            proxy: {
+              uri: 'http://localhost:3030/favicon.ico'
+            }
+          }
+        });
+
+        server.route({
+          method: '*',
+          path: '/{hash}',
+          handler: function(request, reply) {
+            fetchRequest(`http://localhost:3000/redirect/${request.params.hash}`, function (error, response, uri) {
+              if (!error && response.statusCode == 200) {
+                reply.redirect(uri).code(301);
+              } else {
+                console.error(response.statusCode)
+              }
+            })
+          }
+        });
+
+
         server.start(() => {
             console.log(`Server running at: ${server.info.uri}`);
         })
