@@ -16,10 +16,14 @@ module.exports = [
   },
   {
     method: '*',
-    path: '/js/{all}',
+    path: '/js/{all*}',
     handler: {
-      proxy: {
-        uri: 'http://localhost:3030/js/{all}'
+        proxy: {
+        host: 'localhost',
+        port: 3030,
+        protocol: 'http',
+        passThrough: true,
+        redirects: 5
       }
     }
   },
