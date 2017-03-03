@@ -31,8 +31,25 @@ module.exports = [
     method: '*',
     path: '/favicon.ico',
     handler: {
-      proxy: {
-        uri: 'http://localhost:3030/favicon.ico'
+        proxy: {
+        host: 'localhost',
+        port: 3030,
+        protocol: 'http',
+        passThrough: true,
+        redirects: 5
+      }
+    }
+  },
+  {
+    method: '*',
+    path: '/sitemap.xml',
+    handler: {
+        proxy: {
+        host: 'localhost',
+        port: 3030,
+        protocol: 'http',
+        passThrough: true,
+        redirects: 5
       }
     }
   },
